@@ -1,83 +1,75 @@
 import 'package:flutter/material.dart';
 
-import '../const/app_images.dart';
+import '../const/theme/app_color.dart';
 import 'app_text.dart';
 
-class CustomAppBar extends StatelessWidget {
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+  final bool showBack;
   final Function()? onTap;
 
-  const CustomAppBar({super.key, required this.title, this.onTap});
+  const CustomAppBar({
+    super.key,
+    required this.title,
+    this.onTap,
+    this.showBack = false,
+  });
+
+  @override
+  Size get preferredSize => const Size.fromHeight(65);
 
   @override
   Widget build(BuildContext context) {
-    return SliverAppBar(
+    return AppBar(
       toolbarHeight: 65,
+      titleSpacing: 8,
       automaticallyImplyLeading: false,
-      pinned: false,
-      floating: true,
-      snap: true,
-
-      titleSpacing: 10,
       title: Row(
         children: [
-          Container(
-            width: 40,
-            height: 40,
-            padding: const EdgeInsets.all(1.5),
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
-                colors: [
-                  Color(0xFFF97316),
-                  Color(0xFFDB2777),
-                  Color(0xFF2563EB),
-                ],
+          if (showBack) ...[
+            GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                width: 35,
+                height: 35,
+                padding: const EdgeInsets.all(1.5),
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    colors: [
+                      Color(0xFFF97316),
+                      Color(0xFFDB2777),
+                      Color(0xFF2563EB),
+                    ],
+                  ),
+                ),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                  ),
+                  child: const Icon(
+                    Icons.arrow_back_ios_new,
+                    size: 18,
+                    color: AppColors.neutral,
+                  ),
+                ),
               ),
             ),
-            child: ClipOval(
-              child: Image.asset(AppImages.appLogo, fit: BoxFit.contain),
-            ),
+
+            SizedBox(width: 8),
+          ],
+
+          AppText(
+            title,
+            fontSize: 22,
+            fontWeight: FontWeight.w700,
+            color: AppColors.neutral,
           ),
-
-          SizedBox(width: 10),
-
-          AppText(title, fontSize: 26, fontWeight: FontWeight.w700, height: 34),
         ],
       ),
-
-      actions: [
-        if (title.toLowerCase() == 'home') ...[
-          Container(
-            width: 40,
-            height: 40,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xFFF1F5F9),
-            ),
-            child: const Icon(Icons.search_outlined, size: 22),
-          ),
-
-          const SizedBox(width: 4),
-        ],
-
-        GestureDetector(
-          onTap: onTap,
-          child: Container(
-            width: 40,
-            height: 40,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xFFF1F5F9),
-            ),
-            child: const Icon(Icons.dashboard_customize_outlined, size: 22),
-          ),
-        ),
-
-        const SizedBox(width: 16),
-      ],
     );
   }
 }

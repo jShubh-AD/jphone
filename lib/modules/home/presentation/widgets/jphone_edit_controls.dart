@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:j_phone/core/const/theme/app_color.dart';
 import 'package:sliver_dashboard/sliver_dashboard.dart';
 
 /// Custom edit controls for a JPhone dashboard item.

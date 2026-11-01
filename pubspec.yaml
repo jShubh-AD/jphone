@@ -47,6 +47,8 @@ dependencies:
   carousel_slider: ^5.1.2
   sliver_dashboard: ^2.8.0
   lottie: ^3.6.1
+  video_player: ^2.11.1
+  sqlite3_flutter_libs: ^0.6.0+eol
 
 dev_dependencies:
   flutter_test:
@@ -82,6 +84,7 @@ flutter:
   assets:
     - assets/images/
     - assets/animations/
+    - assets/videos/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

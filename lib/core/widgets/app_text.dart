@@ -1,4 +1,7 @@
-import 'package:flutter/cupertino.dart';
+
+import 'package:flutter/material.dart';
+
+import '../const/theme/app_color.dart';
 
 class AppText extends StatelessWidget {
   final String text;
@@ -22,17 +25,20 @@ class AppText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text,
-      textAlign: textAlign,
-      overflow: TextOverflow.ellipsis,
+    return AnimatedDefaultTextStyle(
+      duration: const Duration(milliseconds: 180),
       style: TextStyle(
         fontFamily: 'PlusJakartaSans',
         fontSize: fontSize,
         fontWeight: fontWeight,
-        color: color,
+        color: color ?? AppColors.neutral,
         letterSpacing: letterSpacing,
-        height: height
+        height: height,
+      ),
+      child: Text(
+        text,
+        textAlign: textAlign,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }

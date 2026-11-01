@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
+import 'package:j_phone/core/router/app_routes.dart';
+import 'package:j_phone/core/widgets/app_elevated_button.dart';
 import 'package:sliver_dashboard/sliver_dashboard.dart';
-
-import '../../../../core/const/enums/app_enums.dart';
-import '../../../../core/widgets/app_bar.dart';
+import '../../../../core/const/theme/app_color.dart';
+import '../../../../core/widgets/sliver_app_bar.dart';
 import '../widgets/clock_weather_card.dart';
 import '../widgets/dashboard_styles.dart';
 import '../widgets/dummy_wid.dart';
@@ -162,7 +164,26 @@ class _HomepageState extends State<Homepage> {
       key: ValueKey(item.id),
       itemId: item.id,
       onRemove: () => _handleRemoveItem(item.id),
-      child: _buildWidgetContent(item),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          if (!_dashboardController.isEditing.value) {
+            switch (item.id) {
+              case 'clock_weather':
+                context.push(AppRoutes.clock);
+                break;
+              case 'focus':
+              case 'goal':
+                context.push(AppRoutes.planner);
+                break;
+              case 'finance':
+                context.push(AppRoutes.expenses);
+                break;
+            }
+          }
+        },
+        child: _buildWidgetContent(item),
+      ),
     );
   }
 
@@ -237,7 +258,7 @@ class _HomepageState extends State<Homepage> {
             child: CustomScrollView(
               controller: _scrollController,
               slivers: [
-                CustomAppBar(
+                CustomSliverAppBar(
                   title: 'Home',
                   onTap: _toggleEditMode,
                 ),
@@ -253,6 +274,35 @@ class _HomepageState extends State<Homepage> {
                     itemBuilder: _buildDashboardItem,
                   ),
                 ),
+
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: AppElevatedButton(
+                        text: 'Customize Dashboard',
+                        icon: Icons.tune_rounded,
+                        borderWidth: 0,
+                        borderRadius: 100,
+                        shadowColor: const Color(0xFFF97316).withValues(alpha: 0.35),
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            AppColors.buttonGradient,
+                            // AppColors.buttonGradient1,
+                            AppColors.buttonGradient2,
+                            AppColors.buttonGradient3,
+                          ],
+                        ),
+                        onPressed: () {},
+                      ),
+                    ),
+                  ),
+                ),
+
               ],
             ),
           ),
