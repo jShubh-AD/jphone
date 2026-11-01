@@ -5,6 +5,14 @@ import 'package:drift/native.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
+import 'package:j_phone/modules/planner/data/daos/planner_dao.dart';
+import 'package:j_phone/modules/planner/data/tables/reminders_table.dart';
+import 'package:j_phone/modules/planner/data/tables/steps_table.dart';
+import 'package:j_phone/modules/planner/data/tables/targets_table.dart';
+import 'package:j_phone/modules/planner/data/tables/tasks_table.dart';
+import 'package:j_phone/modules/planner/data/tables/tracks_table.dart';
+import 'package:j_phone/modules/planner/domain/enums/planner_enums.dart';
+
 part 'app_database.g.dart';
 
 /// Central Drift Database for the JPhone offline ecosystem.
@@ -16,15 +24,22 @@ part 'app_database.g.dart';
 /// - SQLite Foreign Key enforcement.
 @DriftDatabase(
   tables: [
-    // Sub-app feature tables will be registered here (e.g., PlannerTasks, Expenses)
+    TargetsTable,
+    TracksTable,
+    TasksTable,
+    StepsTable,
+    RemindersTable,
   ],
   daos: [
-    // Sub-app feature DAOs will be registered here
+    PlannerDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {
   // Private constructor for Singleton
   AppDatabase._() : super(_openConnection());
+
+  /// Testing constructor (e.g., NativeDatabase.memory())
+  AppDatabase.forTesting(super.e);
 
   // Global Singleton instance
   static final AppDatabase instance = AppDatabase._();
