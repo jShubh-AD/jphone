@@ -2,7 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:j_phone/core/database/app_database.dart';
-import 'package:j_phone/modules/planner/domain/enums/planner_enums.dart';
+import 'package:j_phone/modules/planner/domain/planner_enums.dart';
 
 void main() {
   late AppDatabase db;

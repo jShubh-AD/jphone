@@ -16,7 +16,7 @@ abstract final class AppTheme {
         onSurface: AppColors.neutral,
       ),
 
-      scaffoldBackgroundColor: Colors.transparent,
+      scaffoldBackgroundColor: Colors.white,
 
       textTheme: AppTextTheme.textTheme,
 

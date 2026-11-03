@@ -1,5 +1,5 @@
 import 'package:drift/drift.dart';
-import '../../domain/enums/planner_enums.dart';
+import '../../domain/planner_enums.dart';
 import 'targets_table.dart';
 import 'tracks_table.dart';
 

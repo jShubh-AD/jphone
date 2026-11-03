@@ -11,7 +11,7 @@ import 'package:j_phone/modules/planner/data/tables/steps_table.dart';
 import 'package:j_phone/modules/planner/data/tables/targets_table.dart';
 import 'package:j_phone/modules/planner/data/tables/tasks_table.dart';
 import 'package:j_phone/modules/planner/data/tables/tracks_table.dart';
-import 'package:j_phone/modules/planner/domain/enums/planner_enums.dart';
+import 'package:j_phone/modules/planner/domain/planner_enums.dart';
 
 part 'app_database.g.dart';
 

@@ -26,29 +26,28 @@ class JPhoneEditControls extends StatelessWidget {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        Positioned(
-          left: -2,
-          top: -2,
-          child: Center(
-            child: Container(
-              width: 24,
-              height: 24,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Colors.black12, width: 0.1),
-                shape: BoxShape.circle,
-              ),
-              alignment: Alignment.center,
-              child: const Icon(
-                Icons.more_vert_outlined,
-                size: 18,
-                weight: 2,
-                color: Colors.black87,
-              ),
-            ),
-          ),
-        ),
-
+        // Positioned(
+        //   left: -2,
+        //   top: -2,
+        //   child: Center(
+        //     child: Container(
+        //       width: 24,
+        //       height: 24,
+        //       decoration: BoxDecoration(
+        //         color: Colors.white,
+        //         border: Border.all(color: Colors.black12, width: 0.1),
+        //         shape: BoxShape.circle,
+        //       ),
+        //       alignment: Alignment.center,
+        //       child: const Icon(
+        //         Icons.more_vert_outlined,
+        //         size: 18,
+        //         weight: 2,
+        //         color: Colors.black87,
+        //       ),
+        //     ),
+        //   ),
+        // ),
         Positioned(
           top: -2,
           right: -2,
@@ -63,10 +62,7 @@ class JPhoneEditControls extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.bottomLeft,
                   end: Alignment.topRight,
-                  colors: const [
-                    Color(0xFFEC4899),
-                    Color(0xFF9333EA),
-                  ],
+                  colors: const [Color(0xFFEC4899), Color(0xFF9333EA)],
                 ),
                 shape: BoxShape.circle,
               ),

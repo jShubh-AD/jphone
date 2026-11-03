@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/widgets/app_text.dart';
 
 class DummyWidget extends StatelessWidget {
   final String title;
@@ -18,7 +19,7 @@ class DummyWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
       ),
       alignment: Alignment.center,
-      child: Text(title),
+      child: AppText(title),
     );
   }
 }

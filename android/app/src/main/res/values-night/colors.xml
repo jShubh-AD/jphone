@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Widget Dark Mode Palette (Authentic ChatGPT Dark Theme) -->
+    <color name="widget_background">#212121</color>
+    <color name="widget_border">#2F2F2F</color>
+    <color name="widget_text_primary">#ECECEC</color>
+    <color name="widget_text_hint">#8E8E93</color>
+    <color name="widget_icon_tint">#E4E4E7</color>
+    <color name="widget_icon_btn_bg">#2F2F2F</color>
+    <color name="widget_search_bar_bg">#2F2F2F</color>
+</resources>
+

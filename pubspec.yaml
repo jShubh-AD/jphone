@@ -49,6 +49,9 @@ dependencies:
   lottie: ^3.6.1
   video_player: ^2.11.1
   sqlite3_flutter_libs: ^0.6.0+eol
+  get_it: ^9.3.0
+  equatable: ^3.0.0
+  flutter_animate: ^4.5.2
 
 dev_dependencies:
   flutter_test:

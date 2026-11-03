@@ -1,15 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:j_phone/core/const/app_images.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:j_phone/core/di/service_locator.dart';
 import 'package:j_phone/core/router/app_router.dart';
+import 'package:j_phone/modules/planner/presentation/bloc/planner_bloc.dart';
 
 import 'core/const/theme/app_theme.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  runApp(const MyApp());
+
+  await initDependencies();
+
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<PlannerBloc>(
+          create: (_) => sl<PlannerBloc>(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -29,14 +43,7 @@ class MyApp extends StatelessWidget {
             statusBarIconBrightness: Brightness.dark,
             systemStatusBarContrastEnforced: false,
           ),
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: Image.asset(AppImages.appBg, fit: BoxFit.cover),
-              ),
-              ?child,
-            ],
-          ),
+          child: child ?? const SizedBox.shrink(),
         );
       },
       debugShowCheckedModeBanner: false,

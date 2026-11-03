@@ -64,20 +64,28 @@ class _ClockWeatherCardState extends State<ClockWeatherCard> {
             final bool tiny = width < 125;
 
             final double horizontalPadding = tiny
-                ? 10 : small
-                ? 12 : 16;
+                ? 10
+                : small
+                ? 12
+                : 16;
 
             final double clockSize = tiny
-                ? 34 : small
-                ? 40 : 48;
+                ? 34
+                : small
+                ? 40
+                : 48;
 
             final double timeFontSize = tiny
-                ? 17 : small
-                ? 20 : 24;
+                ? 17
+                : small
+                ? 20
+                : 24;
 
             final double temperatureFontSize = tiny
-                ? 17 : small
-                ? 20 : 24;
+                ? 17
+                : small
+                ? 20
+                : 24;
 
             final double lottieSize = (minDimension * 0.62).clamp(90.0, 160.0);
 
@@ -99,7 +107,7 @@ class _ClockWeatherCardState extends State<ClockWeatherCard> {
                   ),
 
                 // blue circle blur
-                if(tiny)
+                if (tiny)
                   Positioned(
                     right: 0,
                     top: 0,
@@ -160,7 +168,7 @@ class _ClockWeatherCardState extends State<ClockWeatherCard> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        if (!tiny && !small)...[
+                        if (!tiny && !small) ...[
                           Container(
                             width: clockSize,
                             height: clockSize,
@@ -175,7 +183,7 @@ class _ClockWeatherCardState extends State<ClockWeatherCard> {
                             ),
                           ),
 
-                          SizedBox(width:  14),
+                          SizedBox(width: 14),
                         ],
 
                         Expanded(
@@ -190,7 +198,9 @@ class _ClockWeatherCardState extends State<ClockWeatherCard> {
                                   Flexible(
                                     child: AppText(
                                       "09:42",
-                                      color: tiny ? Colors.black : AppColors.white,
+                                      color: tiny
+                                          ? Colors.black
+                                          : AppColors.white,
                                       fontWeight: FontWeight.w700,
                                       fontSize: timeFontSize,
                                       letterSpacing: -0.6,
@@ -211,7 +221,7 @@ class _ClockWeatherCardState extends State<ClockWeatherCard> {
                               if (!small) ...[
                                 const SizedBox(height: 1),
                                 AppText(
-                                  "Tronica, India",
+                                  "India, Earth",
                                   color: Colors.white,
                                   fontSize: 12,
                                   letterSpacing: 0,

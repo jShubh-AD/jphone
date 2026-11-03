@@ -5,18 +5,16 @@ abstract final class AppColors {
   static const secondary = Color(0xFFEC4899);
   static const tertiary = Color(0xFFF59E0B);
 
-  static const buttonGradient = Color(0xFFFF7E5F);
-  static const buttonGradient1 = Color(0xFFFEB47B);
-  static const buttonGradient2 = Color(0xFFB4136D);
-  static const buttonGradient3 = Color(0xFF0058BE);
-
-
+  // Modern Sunset -> Magenta -> Violet button gradient matching reference design
+  static const buttonGradient = Color(0xFFFF5E3A);
+  static const buttonGradient1 = Color(0xFFF97316);
+  static const buttonGradient2 = Color(0xFFD946EF);
+  static const buttonGradient3 = Color(0xFF7C3AED);
 
   static const neutral = Color(0xFF0F172A);
 
   static const white = Colors.white;
   static const surface = Color(0xFFF8FAFC);
-
 
   // Text Colors
   static const navbarSelectedTextClr = Color(0xFFEA580C);

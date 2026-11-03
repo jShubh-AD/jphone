@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:j_phone/core/router/app_routes.dart';
 import 'package:j_phone/core/widgets/app_elevated_button.dart';
 import 'package:sliver_dashboard/sliver_dashboard.dart';
-import '../../../../core/const/theme/app_color.dart';
+import '../../../../core/widgets/app_text.dart';
 import '../../../../core/widgets/sliver_app_bar.dart';
+import '../widgets/activity_streaks_card.dart';
 import '../widgets/clock_weather_card.dart';
 import '../widgets/dashboard_styles.dart';
-import '../widgets/dummy_wid.dart';
-import '../widgets/focus_card.dart';
+import '../widgets/financial_pulse_card.dart';
+import '../widgets/pomodoro_card.dart';
+import '../widgets/goals_card.dart';
 import '../widgets/jphone_dashboard_item.dart';
 import '../widgets/jphone_editor_scope.dart';
+import '../widgets/quick_links_card.dart';
+import '../widgets/quick_memo_card.dart';
 
 /// The JPhone Home dashboard page.
 ///
 /// Implements clear separation of concerns:
 /// A. Dashboard Engine State: Owned by [DashboardController] (geometry, collision, reflow, resize math).
 /// B. JPhone Editor UI State: Owned here (edit mode, selected item, active resizing item, active dragging item, chrome).
-/// C. Actual Widget Content: Stable card widgets ([ClockWeatherCard], [FocusWidget], etc.).
+/// C. Actual Widget Content: Production-grade cards ([QuickLinksCard], [ClockWeatherCard], [FocusCard], [GoalsCard], etc.).
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
 
@@ -30,48 +35,102 @@ class _HomepageState extends State<Homepage> {
   late final DashboardController _dashboardController;
   late final ScrollController _scrollController;
 
-  /// Default layout definition with persistent item IDs.
+  /// Default layout definition matching the reference visual hierarchy with strict min/max constraints.
   static const List<LayoutItem> _defaultLayout = [
     LayoutItem(
-      id: 'clock_weather',
+      id: 'quick_links',
       x: 0,
       y: 0,
       w: 4,
       h: 1,
+      minW: 2,
+      maxW: 4,
+      minH: 1,
+      maxH: 1,
       isDraggable: true,
       isResizable: true,
     ),
     LayoutItem(
-      id: 'focus',
+      id: 'clock_weather',
       x: 0,
       y: 1,
+      w: 4,
+      h: 1,
+      minW: 1,
+      maxW: 4,
+      minH: 1,
+      maxH: 2,
+      isDraggable: true,
+      isResizable: true,
+    ),
+    LayoutItem(
+      id: 'pomodoro',
+      x: 0,
+      y: 2,
       w: 2,
       h: 2,
+      minW: 2,
+      maxW: 4,
+      minH: 2,
+      maxH: 2,
       isDraggable: true,
       isResizable: true,
     ),
     LayoutItem(
       id: 'goal',
       x: 2,
-      y: 1,
+      y: 2,
       w: 2,
       h: 2,
+      minW: 2,
+      maxW: 4,
+      minH: 2,
+      maxH: 2,
+      isDraggable: true,
+      isResizable: true,
+    ),
+    LayoutItem(
+      id: 'streaks',
+      x: 0,
+      y: 4,
+      w: 4,
+      h: 2,
+      minW: 2,
+      maxW: 4,
+      minH: 2,
+      maxH: 2,
       isDraggable: true,
       isResizable: true,
     ),
     LayoutItem(
       id: 'finance',
       x: 0,
-      y: 3,
+      y: 6,
       w: 4,
       h: 2,
+      minW: 2,
+      maxW: 4,
+      minH: 2,
+      maxH: 2,
+      isDraggable: true,
+      isResizable: true,
+    ),
+    LayoutItem(
+      id: 'notes',
+      x: 0,
+      y: 8,
+      w: 4,
+      h: 2,
+      minW: 2,
+      maxW: 4,
+      minH: 2,
+      maxH: 2,
       isDraggable: true,
       isResizable: true,
     ),
   ];
 
   /// Tracks which item is currently being resized by the user.
-  /// Separated completely from selection state.
   String? _resizingItemId;
 
   /// Tracks which item is currently being dragged.
@@ -104,8 +163,8 @@ class _HomepageState extends State<Homepage> {
   }
 
   /// Toggles dashboard edit mode.
-  /// When exiting edit mode, ensures all selection and active interaction states are cleanly purged.
   void _toggleEditMode() {
+    HapticFeedback.mediumImpact();
     _dashboardController.toggleEditing();
 
     if (!_dashboardController.isEditing.value) {
@@ -120,7 +179,6 @@ class _HomepageState extends State<Homepage> {
   void _handleRemoveItem(String itemId) {
     _dashboardController.removeItem(itemId);
 
-    // If the removed item was selected, remove it from the selection set
     final currentSelection = _dashboardController.selectedItemIds.value;
     if (currentSelection.contains(itemId)) {
       final updated = Set<String>.from(currentSelection)..remove(itemId);
@@ -138,17 +196,14 @@ class _HomepageState extends State<Homepage> {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Removed "$itemId"'),
+        content: AppText('Removed "$itemId"'),
         duration: const Duration(seconds: 3),
-        action: SnackBarAction(
-          label: 'RESET ALL',
-          onPressed: _resetLayout,
-        ),
+        action: SnackBarAction(label: 'RESET ALL', onPressed: _resetLayout),
       ),
     );
   }
 
-  /// Restores the default 4-item dashboard layout.
+  /// Restores the default dashboard layout.
   void _resetLayout() {
     _dashboardController.importLayout(_defaultLayout);
     _dashboardController.clearSelection();
@@ -158,49 +213,63 @@ class _HomepageState extends State<Homepage> {
     });
   }
 
-  /// Builds a dashboard item wrapped in JPhone's visual editing chrome.
+  /// Builds a dashboard item wrapped in JPhone's visual editing chrome with smooth staggered entrance.
   Widget _buildDashboardItem(BuildContext context, LayoutItem item) {
+    final index = _defaultLayout.indexWhere((l) => l.id == item.id);
+    final delayMs = (index.clamp(0, 6) * 45);
+
     return JPhoneDashboardItem(
       key: ValueKey(item.id),
       itemId: item.id,
       onRemove: () => _handleRemoveItem(item.id),
-      child: GestureDetector(
+      child: _wrapItemTap(item, _buildWidgetContent(item))
+          .animate()
+          .fadeIn(duration: 350.ms, delay: delayMs.ms)
+          .slideY(begin: 0.04, end: 0, curve: Curves.easeOutCubic),
+    );
+  }
+
+  Widget _wrapItemTap(LayoutItem item, Widget content) {
+    // Items like clock_weather need outer tap handling to push route
+    if (item.id == 'clock_weather') {
+      return GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
           if (!_dashboardController.isEditing.value) {
-            switch (item.id) {
-              case 'clock_weather':
-                context.push(AppRoutes.clock);
-                break;
-              case 'focus':
-              case 'goal':
-                context.push(AppRoutes.planner);
-                break;
-              case 'finance':
-                context.push(AppRoutes.expenses);
-                break;
-            }
+            context.push(AppRoutes.clock);
           }
         },
-        child: _buildWidgetContent(item),
-      ),
-    );
+        child: content,
+      );
+    }
+    // Other items have their own internal tap targets, gestures, or bottom sheets
+    return content;
   }
 
   /// Builds the persistent widget content for each dashboard tile ID.
   Widget _buildWidgetContent(LayoutItem item) {
     switch (item.id) {
+      case 'quick_links':
+        return QuickLinksCard(widthColumns: item.w);
+
       case 'clock_weather':
         return const ClockWeatherCard();
 
+      case 'pomodoro':
       case 'focus':
-        return DummyWidget(title: "Focus");
+        return PomodoroCard(widthColumns: item.w, heightRows: item.h);
 
       case 'goal':
-        return const DummyWidget(title: 'Goals');
+        return GoalsCard(widthColumns: item.w);
+
+      case 'streaks':
+        return ActivityStreaksCard(widthColumns: item.w);
 
       case 'finance':
-        return const DummyWidget(title: 'Finance');
+        return FinancialPulseCard(widthColumns: item.w);
+
+      case 'notes':
+        return QuickMemoCard(widthColumns: item.w);
 
       default:
         return const SizedBox.shrink();
@@ -210,6 +279,7 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: JPhoneEditorScope(
           resizingItemId: _resizingItemId,
@@ -258,14 +328,15 @@ class _HomepageState extends State<Homepage> {
             child: CustomScrollView(
               controller: _scrollController,
               slivers: [
-                CustomSliverAppBar(
-                  title: 'Home',
-                  onTap: _toggleEditMode,
-                ),
+                CustomSliverAppBar(title: 'Home', onTap: _toggleEditMode),
                 SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 8,
+                  ),
                   sliver: SliverDashboard(
                     controller: _dashboardController,
+                    slotAspectRatio: 0.95,
                     animateReflow: true,
                     reflowDuration: const Duration(milliseconds: 150),
                     fillViewport: true,
@@ -278,31 +349,17 @@ class _HomepageState extends State<Homepage> {
                 SliverFillRemaining(
                   hasScrollBody: false,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                    padding: const EdgeInsets.fromLTRB(0, 16, 0, 24),
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: AppElevatedButton(
-                        text: 'Customize Dashboard',
+                        text: 'Customize',
                         icon: Icons.tune_rounded,
-                        borderWidth: 0,
-                        borderRadius: 100,
-                        shadowColor: const Color(0xFFF97316).withValues(alpha: 0.35),
-                        gradient: const LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            AppColors.buttonGradient,
-                            // AppColors.buttonGradient1,
-                            AppColors.buttonGradient2,
-                            AppColors.buttonGradient3,
-                          ],
-                        ),
                         onPressed: () {},
                       ),
                     ),
                   ),
                 ),
-
               ],
             ),
           ),

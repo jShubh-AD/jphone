@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:j_phone/core/widgets/app_text.dart';
 import 'package:j_phone/modules/clock/presentation/pages/clock_page.dart';
 import 'package:j_phone/modules/expenses/presentation/pages/expenses_page.dart';
 import 'package:j_phone/modules/home/presentation/pages/homepage.dart';
@@ -87,7 +88,7 @@ final GoRouter appRouter = GoRouter(
   // ---------------------------------------------------------------------------
   errorBuilder: (BuildContext context, GoRouterState state) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Page Not Found')),
+      appBar: AppBar(title: const AppText('Page Not Found')),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -96,15 +97,15 @@ final GoRouter appRouter = GoRouter(
             children: [
               const Icon(Icons.error_outline, size: 64, color: Colors.redAccent),
               const SizedBox(height: 16),
-              Text(
+              AppText(
                 'No route defined for: ${state.uri}',
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 16),
+                fontSize: 16,
               ),
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () => context.go(AppRoutes.home),
-                child: const Text('Back to Home'),
+                child: const AppText('Back to Home'),
               ),
             ],
           ),
