@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:j_phone/core/const/theme/app_color.dart';
 
-import '../const/app_images.dart';
+import '../const/app_assets.dart';
 import 'app_text.dart';
 
 class CustomSliverAppBar extends StatelessWidget {
@@ -32,7 +32,8 @@ class CustomSliverAppBar extends StatelessWidget {
         children: [
           if (showBack) ...[
             GestureDetector(
-              onTap: onBack ??
+              onTap:
+                  onBack ??
                   () {
                     if (Navigator.canPop(context)) {
                       Navigator.pop(context);
@@ -86,7 +87,7 @@ class CustomSliverAppBar extends StatelessWidget {
                 ),
               ),
               child: ClipOval(
-                child: Image.asset(AppImages.appLogo, fit: BoxFit.contain),
+                child: Image.asset(AppAssets.appLogo, fit: BoxFit.contain),
               ),
             ),
             const SizedBox(width: 8),

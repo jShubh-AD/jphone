@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-import 'package:j_phone/core/const/app_images.dart';
+import 'package:j_phone/core/const/app_assets.dart';
 import 'package:j_phone/core/const/theme/app_color.dart';
 import 'package:j_phone/core/widgets/app_text.dart';
 import 'package:lottie/lottie.dart';
@@ -131,7 +131,7 @@ class _ClockWeatherCardState extends State<ClockWeatherCard> {
                     top: -lottieSize * 0.18,
                     child: IgnorePointer(
                       child: Lottie.asset(
-                        AppImages.sunnyWeatherGif,
+                        AppAssets.sunnyWeatherGif,
                         width: lottieSize,
                         height: lottieSize,
                         fit: BoxFit.contain,

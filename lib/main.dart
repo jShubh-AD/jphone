@@ -16,11 +16,7 @@ Future<void> main() async {
 
   runApp(
     MultiBlocProvider(
-      providers: [
-        BlocProvider<PlannerBloc>(
-          create: (_) => sl<PlannerBloc>(),
-        ),
-      ],
+      providers: [BlocProvider<PlannerBloc>(create: (_) => sl<PlannerBloc>())],
       child: const MyApp(),
     ),
   );

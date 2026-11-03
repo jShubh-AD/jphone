@@ -66,10 +66,11 @@ class _PomodoroCardState extends State<PomodoroCard> {
   }
 
   void _toggleTimer() {
-    if (_isRunning)
+    if (_isRunning) {
       _stopTimer();
-    else
+    } else {
       _startTimer();
+    }
   }
 
   void _startTimer() {
